@@ -60,6 +60,30 @@ if (pathname == "/") {
 
 if (pathname == "../index.html") {
     //Petición de la página principal
+    fs.readFile(pathname, (err, data) => {
+
+        if (err) {
+            console.log(err);
+            // HTTP Status: 404 : NOT FOUND
+            // En caso de no haberse encontrado el archivo
+            res.writeHead(404, {
+                'Content-Type': 'text/html'
+            }); return res.end("404 Not Found");
+        }
+        //Página encontrada
+        // HTTP Status: 200 : OK
+
+        res.writeHead(200, {
+            'Content-Type':
+                MimeTypes[pathname.split('.').pop()] || 'text/html'
+        });
+
+        // Escribe el contenido de data en el body de la respuesta.
+        res.write(data.toString());
+
+        // Envía la respuesta
+        return res.end();
+    });
 }
 
 if (req.method === 'POST' && pathname == '/cv') {
@@ -69,9 +93,33 @@ if (req.method === 'POST' && pathname == '/cv') {
 
 if (pathname.split(".")[1] == "css") {
     //Petición de la hoja CSS
+    fs.readFile(".." + pathname, (err, data) => {
+
+        if (err) {
+            console.log(err);
+            res.writeHead(404, {
+                'Content-Type': 'text/html'
+            }); return res.end("404 Not Found");
+        }
+
+        res.writeHead(200, {
+            'Content-Type': mimeTypes[pathname.split('.').pop()] || 'text/css'
+        });
+
+        // Escribe el contenido de data en el body de la respuesta.
+        res.write(data.toString());
+
+        // Envía la respuesta
+        return res.end();
+
+    });
 }
 
 /*
 ¿Para qué, además de conocer la dirección de la petición, es útil la variable "pathname"?
+
+¿Qué contine el parametro "data"?
+
+¿Cuál es la diferencia entre brindar una respuesta HTML y brindar una CSS?
 */
 
