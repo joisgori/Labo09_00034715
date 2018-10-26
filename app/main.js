@@ -110,6 +110,21 @@ if (req.method === 'POST' && pathname == '/cv') {
             res.writeHead(200, {
                 'Content-Type': mimeTypes[pathname.split('.').pop()] || 'text/html'
             });
+
+            //Variables de control. 
+
+            let parsedData = data.toString().replace('${dui}', result.dui)
+                .replace("${lastname}", result.lastname)
+                .replace("${firstname}", result.firstname)
+                .replace("${gender}", result.gender)
+                .replace("${civilStatus}", result.civilStatus)
+                .replace("${birth}", result.birth)
+                .replace("${exp}", result.exp)
+                .replace("${tel}", result.tel)
+                .replace("${std}", result.std);
+
+            res.write(parsedData);
+            return res.end();
         });
     });
 }
@@ -144,5 +159,8 @@ if (pathname.split(".")[1] == "css") {
 ¿Qué contine el parametro "data"?
 
 ¿Cuál es la diferencia entre brindar una respuesta HTML y brindar una CSS?
+
+¿Qué contiene la variable "result"?
+¿Por qué con la variable "data" se debe aplicarse el metodo toString()? Justifique.
 */
 
