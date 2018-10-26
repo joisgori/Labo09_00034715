@@ -87,8 +87,31 @@ if (pathname == "../index.html") {
 }
 
 if (req.method === 'POST' && pathname == '/cv') {
-    //Petición del formulario a traves del método
-    POST
+    //Petición del formulario a traves del método POST
+    collectRequestData(req, (err, result) => {
+
+        if (err) {
+            res.writeHead(400, {
+                'content-type': 'text/html'
+            });
+            return res.end('Bad Request');
+        }
+
+        fs.readFile("../templates/plantilla.html", function (err, data) {
+            if (err) {
+                console.log(err);
+                // HTTP Status: 404 : NOT FOUND
+                // Content Type: text/plain
+                res.writeHead(404, {
+                    'Content-Type': 'text/html'
+                });
+                return res.end("404 Not Found");
+            }
+            res.writeHead(200, {
+                'Content-Type': mimeTypes[pathname.split('.').pop()] || 'text/html'
+            });
+        });
+    });
 }
 
 if (pathname.split(".")[1] == "css") {
